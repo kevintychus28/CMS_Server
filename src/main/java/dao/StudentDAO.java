@@ -20,7 +20,7 @@ public class StudentDAO {
         try {
             connection = DBUtil.getConnection();
             //3.写sql语句
-            String sql = "select * from student where id=? and password=?";
+            String sql = "select * from student where stu_id=? and stu_password=?";
             //4.获得statement对象
             prepareStatement  = connection.prepareStatement(sql);
             prepareStatement .setString(1,stu_id);
