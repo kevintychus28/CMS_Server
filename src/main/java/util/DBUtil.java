@@ -6,7 +6,7 @@ public class DBUtil {
 
     static String DBurl = "jdbc:mysql://localhost:3306/cms_database";
     static String user = "root";
-    static String password = "";
+    static String password = "root";
 
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
         //1.加载驱动
