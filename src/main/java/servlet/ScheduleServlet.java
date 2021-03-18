@@ -34,7 +34,7 @@ public class ScheduleServlet extends HttpServlet {
             //2.建立数据库链接
             connection = DBUtil.getConnection();
             //3.写sql语句
-            String sql = "SELECT cou_name, cou_teacher, cou_classroom, cou_weekday, cou_period FROM course a JOIN schedule b ON a.cou_id = b.cou_id AND b.stu_id = ? ORDER BY cou_period";
+            String sql = "SELECT cou_name, tec_name, cou_classroom, cou_weekday, cou_period FROM course a JOIN schedule b ON a.cou_id = b.cou_id AND b.stu_id = ? JOIN teacher c ON a.cou_teacher = c.tec_id ORDER BY cou_period";
             //4.获得statement对象
             prepareStatement  = connection.prepareStatement(sql);
             prepareStatement .setString(1,stu_id);

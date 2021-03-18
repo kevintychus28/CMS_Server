@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class DBUtil {
 
-    static String DBurl = "jdbc:mysql://localhost:3306/cms_database";
+    static String DBurl = "jdbc:mysql://localhost:3306/cms_database?useUnicode=true&characterEncoding=UTF-8";
     static String user = "root";
     static String password = "root";
 

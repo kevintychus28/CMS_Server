@@ -2,6 +2,7 @@ package servlet;
 
 import dao.StudentDAO;
 import entity.Student;
+import net.sf.json.JSONArray;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +20,7 @@ public class LoginServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        doPost(request,response);
+        doPost(request, response);
     }
 
     @Override
@@ -38,16 +39,15 @@ public class LoginServlet extends HttpServlet {
 
         //获取数据库中符合目标的数据
         StudentDAO studentDao = new StudentDAO();
-        List<Student> studentList = studentDao.login(stu_id,stu_password);
-        System.out.println(studentList);
+        JSONArray stuJson = studentDao.login(stu_id, stu_password);
+        List<Student> studentList = stuJson;
+        System.out.println("studentList:" + studentList);
 
-        if (studentList.size()!=0){
-            HttpSession session=request.getSession();
-            session.setAttribute("userID",stu_id);
-            response.getWriter().write("success");
-        }
-        else{
-            response.getWriter().write("登录失败!");
+        if (studentList.size() != 0) {
+            HttpSession session = request.getSession();
+            session.setAttribute("userID", stu_id);
+            response.getWriter().write(String.valueOf(stuJson));
+            System.out.println("stuJson" + String.valueOf(stuJson));
         }
 
     }
