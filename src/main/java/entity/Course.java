@@ -2,7 +2,7 @@ package entity;
 
 public class Course {
 
-    public Course(){
+    public Course() {
     }
 
     public Course(String cou_name, String cou_teacher) {
@@ -16,6 +16,8 @@ public class Course {
     private String cou_classroom;
     private String cou_weekday;
     private String cou_period;
+    private String cou_start_time;
+
 
     public String getCou_id() {
         return cou_id;
@@ -65,6 +67,14 @@ public class Course {
         this.cou_period = cou_period;
     }
 
+    public String getCou_start_time() {
+        return cou_start_time;
+    }
+
+    public void setCou_start_time(String cou_start_time) {
+        this.cou_start_time = cou_start_time;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -74,6 +84,7 @@ public class Course {
                 ", cou_classroom='" + cou_classroom + '\'' +
                 ", cou_weekday='" + cou_weekday + '\'' +
                 ", cou_period='" + cou_period + '\'' +
+                ", cou_start_time='" + cou_start_time + '\'' +
                 '}';
     }
 }

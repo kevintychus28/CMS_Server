@@ -1,7 +1,9 @@
-package servlet;
+package servlet.login;
 
 import dao.StudentDAO;
+import dao.TeacherDAO;
 import entity.Student;
+import entity.Teacher;
 import net.sf.json.JSONArray;
 
 import javax.servlet.ServletException;
@@ -13,8 +15,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "LoginServlet", value = "/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "LoginServletTec", value = "/LoginServletTec")
+public class LoginServletTec extends HttpServlet {
 
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,25 +31,25 @@ public class LoginServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
 
-        //获取注册的用户名
-        String stu_id = request.getParameter("userID");
-        //获取注册的密码
-        String stu_password = request.getParameter("password");
+        //获取登录的用户名
+        String tec_id = request.getParameter("userID");
+        //获取登录的密码
+        String tec_password = request.getParameter("password");
 
-        System.out.println("账号:" + stu_id);
-        System.out.println("密码:" + stu_password);
+        System.out.println("账号:" + tec_id);
+        System.out.println("密码:" + tec_password);
 
         //获取数据库中符合目标的数据
-        StudentDAO studentDao = new StudentDAO();
-        JSONArray stuJson = studentDao.login(stu_id, stu_password);
-        List<Student> studentList = stuJson;
-        System.out.println("studentList:" + studentList);
+        TeacherDAO teacherDAO = new TeacherDAO();
+        JSONArray teaJson = teacherDAO.login(tec_id, tec_password);
+        List<Teacher> teacherList = teaJson;
+        System.out.println("teacherList:" + teacherList);
 
-        if (studentList.size() != 0) {
+        if (teacherList.size() != 0) {
             HttpSession session = request.getSession();
-            session.setAttribute("userID", stu_id);
-            response.getWriter().write(String.valueOf(stuJson));
-            System.out.println("stuJson" + String.valueOf(stuJson));
+            session.setAttribute("userID", tec_id);
+            response.getWriter().write(String.valueOf(teaJson));
+            System.out.println("stuJson" + String.valueOf(teaJson));
         }
 
     }
