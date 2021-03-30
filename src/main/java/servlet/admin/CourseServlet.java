@@ -16,8 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 //
-@WebServlet(name = "StudentServlet", value = "/StudentServlet")
-public class StudentServlet extends HttpServlet {
+@WebServlet(name = "CourseServlet", value = "/CourseServlet")
+public class CourseServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //设置utf-8，防止出现乱码情况
@@ -37,33 +37,33 @@ public class StudentServlet extends HttpServlet {
             connection = DBUtil.getConnection();
             //3.写sql语句
             if (type.equals("get")) {
-                System.out.println("查询学生信息");
-                sql = "SELECT * FROM student";
+                System.out.println("查询课程信息");
+                sql = "SELECT cou_id,cou_name,tec_name,cou_classroom,cou_weekday,cou_period,cou_exam_time FROM course a JOIN teacher b ON a.cou_teacher= b.tec_id";
                 //4.获得statement对象
                 prepareStatement = connection.prepareStatement(sql);
                 //5.执行sql 得到结果集
                 resultSet = prepareStatement.executeQuery();
                 //6.处理结果集，转换成json格式数据
                 while (resultSet.next()) {
-                    jsonobj.put("stu_id", resultSet.getString(1));
-                    jsonobj.put("stu_password", resultSet.getString(2));
-                    jsonobj.put("stu_name", resultSet.getString(3));
-                    jsonobj.put("stu_sex", resultSet.getString(4));
-                    jsonobj.put("stu_date", resultSet.getString(5));
-                    jsonobj.put("stu_class", resultSet.getString(6));
-                    jsonobj.put("stu_college", resultSet.getString(7));
+                    jsonobj.put("cou_id", resultSet.getString(1));
+                    jsonobj.put("cou_name", resultSet.getString(2));
+                    jsonobj.put("cou_teacher", resultSet.getString(3));
+                    jsonobj.put("cou_classroom", resultSet.getString(4));
+                    jsonobj.put("cou_weekday", resultSet.getString(5));
+                    jsonobj.put("cou_period", resultSet.getString(6));
+                    jsonobj.put("cou_exam_time", resultSet.getString(7));
                     jsonarray.add(jsonobj);
                 }
                 System.out.println(jsonarray);
                 //7.返回json数据给客户端
                 response.getWriter().write(String.valueOf(jsonarray));
             } else if (type.equals("delete")) {
-                System.out.println("删除学生信息");
-                String stu_id = request.getParameter("stu_id");
-                sql = "DELETE FROM student WHERE stu_id = ?";
+                System.out.println("删除课程信息");
+                String cou_id = request.getParameter("cou_id");
+                sql = "DELETE FROM course WHERE cou_id = ?";
                 //4.获得statement对象
                 prepareStatement = connection.prepareStatement(sql);
-                prepareStatement.setString(1, stu_id);
+                prepareStatement.setString(1, cou_id);
                 //5.执行sql 得到结果集 ---> 如果你的SQL语句是诸如update,insert的更新语句，应该用statement的execute()方法
                 prepareStatement.execute();
                 //6.返回json数据给客户端
@@ -101,48 +101,45 @@ public class StudentServlet extends HttpServlet {
             connection = DBUtil.getConnection();
             //3.写sql语句
             if (type.equals("add")) {
-                System.out.println("增加学生信息");
-                String stu_id = request.getParameter("stu_id");
-                String stu_password = request.getParameter("stu_password");
-                String stu_name = request.getParameter("stu_name");
-                String stu_sex = request.getParameter("stu_sex");
-                String stu_date = request.getParameter("stu_date");
-                String stu_class = request.getParameter("stu_class");
-                String stu_college = request.getParameter("stu_college");
-                sql = "INSERT INTO student ( stu_id, stu_password,stu_name,stu_sex,stu_date,stu_class,stu_college ) VALUES ( ?,?,?,?,?,?,?)";
+                System.out.println("增加课程信息");
+                String cou_name = request.getParameter("cou_name");
+                String cou_teacher = request.getParameter("cou_teacher");
+                String cou_classroom = request.getParameter("cou_classroom");
+                String cou_weekday = request.getParameter("cou_weekday");
+                String cou_period = request.getParameter("cou_period");
+                String cou_exam_time = request.getParameter("cou_exam_time");
+                sql = "INSERT INTO course ( cou_name, cou_teacher,cou_classroom,cou_weekday,cou_period,cou_exam_time) VALUES ( ?,?,?,?,?,?)";
                 //4.获得statement对象
                 prepareStatement = connection.prepareStatement(sql);
-                prepareStatement.setString(1, stu_id);
-                prepareStatement.setString(2, stu_password);
-                prepareStatement.setString(3, stu_name);
-                prepareStatement.setString(4, stu_sex);
-                prepareStatement.setString(5, stu_date);
-                prepareStatement.setString(6, stu_class);
-                prepareStatement.setString(7, stu_college);
+                prepareStatement.setString(1, cou_name);
+                prepareStatement.setString(2, cou_teacher);
+                prepareStatement.setString(3, cou_classroom);
+                prepareStatement.setString(4, cou_weekday);
+                prepareStatement.setString(5, cou_period);
+                prepareStatement.setString(6, cou_exam_time);
                 //5.执行sql 得到结果集 ---> 如果你的SQL语句是诸如update,insert的更新语句，应该用statement的execute()方法
                 prepareStatement.execute();
                 //6.返回json数据给客户端
                 response.getWriter().write("success");
             } else if (type.equals("edit")) {
                 System.out.println("编辑学生信息");
-                String stu_id = request.getParameter("stu_id");
-                String stu_password = request.getParameter("stu_password");
-                String stu_name = request.getParameter("stu_name");
-                String stu_sex = request.getParameter("stu_sex");
-                String stu_date = request.getParameter("stu_date");
-                String stu_class = request.getParameter("stu_class");
-                String stu_college = request.getParameter("stu_college");
-                System.out.println(stu_id + stu_password + stu_name + stu_sex + stu_date + stu_class + stu_college);
-                sql = "UPDATE student SET stu_password=?,stu_name=?,stu_sex=?,stu_date=?,stu_class=?,stu_college=? WHERE stu_id=?";
+                String cou_id = request.getParameter("cou_id");
+                String cou_name = request.getParameter("cou_name");
+                String cou_teacher = request.getParameter("cou_teacher");
+                String cou_classroom = request.getParameter("cou_classroom");
+                String cou_weekday = request.getParameter("cou_weekday");
+                String cou_period = request.getParameter("cou_period");
+                String cou_exam_time = request.getParameter("cou_exam_time");
+                sql = "UPDATE course SET cou_name=?,cou_teacher=?,cou_classroom=?,cou_weekday=?,cou_period=?,cou_exam_time=? WHERE cou_id=?";
                 //4.获得statement对象
                 prepareStatement = connection.prepareStatement(sql);
-                prepareStatement.setString(1, stu_password);
-                prepareStatement.setString(2, stu_name);
-                prepareStatement.setString(3, stu_sex);
-                prepareStatement.setString(4, stu_date);
-                prepareStatement.setString(5, stu_class);
-                prepareStatement.setString(6, stu_college);
-                prepareStatement.setString(7, stu_id);
+                prepareStatement.setString(1, cou_name);
+                prepareStatement.setString(2, cou_teacher);
+                prepareStatement.setString(3, cou_classroom);
+                prepareStatement.setString(4, cou_weekday);
+                prepareStatement.setString(5, cou_period);
+                prepareStatement.setString(6, cou_exam_time);
+                prepareStatement.setString(7, cou_id);
                 //5.执行sql 得到结果集 ---> 如果你的SQL语句是诸如update,insert的更新语句，应该用statement的execute()方法
                 prepareStatement.execute();
                 //6.返回json数据给客户端
